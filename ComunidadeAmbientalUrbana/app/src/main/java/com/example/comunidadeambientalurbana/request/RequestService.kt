@@ -2,18 +2,20 @@ package com.example.comunidadeambientalurbana.request
 
 import android.app.Activity
 import android.util.Log
+import android.view.View
 import android.widget.Toast
-import com.android.volley.AuthFailureError
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
 import com.android.volley.Response
-import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.beust.klaxon.Klaxon
-import com.example.comunidadeambientalurbana.MainActivity
+import com.example.comunidadeambientalurbana.R
 import com.example.comunidadeambientalurbana.environment.Environment
 import com.example.comunidadeambientalurbana.request.dtos.FeedNews
-import org.json.JSONObject
+import com.example.comunidadeambientalurbana.ui.newsFeed.adapters.NewsAdapter
 
 class RequestService {
 
@@ -28,11 +30,16 @@ class RequestService {
                     Request.Method.GET,     // metodo de requisição HTTP
                     url,
                     Response.Listener { response ->   // Listener de resposta com sucesso
-                        MainActivity.newsFeed = Klaxon().parse<FeedNews>(response.toString())!!
-                        Log.i("Bing News Request", response)
+                        val newsFeed = Klaxon().parse<FeedNews>(response.toString())!!
+
+                        val recycleView = activity.findViewById<RecyclerView>(R.id.newsList)
+                        recycleView.layoutManager = GridLayoutManager(activity,1)
+                       val newsAdapter = NewsAdapter(activity, newsFeed.value.toList())
+                        recycleView.adapter = newsAdapter
+                        activity.findViewById<ConstraintLayout>(R.id.LoadLayout).visibility = View.GONE
 
                     }, Response.ErrorListener { error ->    // Listener de resposta com Falha
-                        Toast.makeText(activity, "Houver um erro ao carregar as notícias", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(activity, activity.getText(R.string.load_error_message), Toast.LENGTH_SHORT).show()
                     }
                 )
 

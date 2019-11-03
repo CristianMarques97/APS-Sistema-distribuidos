@@ -1,5 +1,6 @@
 package com.example.comunidadeambientalurbana.ui.home
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -21,17 +22,13 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_home, container, false)
-        val textView: TextView = root.findViewById(R.id.text_home)
-        textView.setOnClickListener {
-            var ex = MainActivity.newsFeed
-            Log.i("debug", MainActivity.newsFeed.toString())
-        }
-        homeViewModel.text.observe(this, Observer {
-            textView.text = it
-        })
-        return root
+        return inflater.inflate(R.layout.fragment_home, container, false)
+    }
+
+
+    override fun onStart() {
+        super.onStart()
+        val prefs = activity?.getSharedPreferences("appConfig", Context.MODE_PRIVATE)
+        activity?.findViewById<TextView>(R.id.welcome)?.text = "Bem-vindo ${prefs?.getString("user-name", "Visitante")}"
     }
 }

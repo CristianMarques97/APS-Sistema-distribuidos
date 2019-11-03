@@ -6,4 +6,9 @@
     </string>
     <string name="title_notifications">Notifications</string>
     <string name="prefer_ncias">Preferências</string>
+    <string name="publish_date">Data de publicação</string>
+    <string name="publisher_name">Fonte</string>
+    <string name="load_error_message">Houver um erro ao carregar as notícias"</string>
+
+
 </resources>
