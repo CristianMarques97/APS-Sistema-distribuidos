@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Comunidade Ambiental Urbana</string>
+    <string name="details_activity_name">Detalhes da notícia</string>
     <string name="title_home">Início</string>
     <string name="title_dashboard">
         Meu Feed
@@ -9,6 +10,9 @@
     <string name="publish_date">Data de publicação</string>
     <string name="publisher_name">Fonte</string>
     <string name="load_error_message">Houver um erro ao carregar as notícias"</string>
-
+    <string name="artigo_completo_aqui">Artigo completo aqui</string>
+    <string name="shareNews">Compartilhar via</string>
+    <string name="welcome">Bem-vindo</string>
+    <string name="no_user_name">Visitante</string>
 
 </resources>

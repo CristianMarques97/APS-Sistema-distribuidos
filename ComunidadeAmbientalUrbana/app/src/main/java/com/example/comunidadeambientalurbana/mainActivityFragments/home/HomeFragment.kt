@@ -1,4 +1,4 @@
-package com.example.comunidadeambientalurbana.ui.home
+package com.example.comunidadeambientalurbana.mainActivityFragments.home
 
 import android.content.Context
 import android.os.Bundle
@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Switch
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -29,6 +30,20 @@ class HomeFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         val prefs = activity?.getSharedPreferences("appConfig", Context.MODE_PRIVATE)
-        activity?.findViewById<TextView>(R.id.welcome)?.text = "Bem-vindo ${prefs?.getString("user-name", "Visitante")}"
+
+        activity?.findViewById<TextView>(R.id.welcome)?.text =
+            "${getText(R.string.welcome)} ${if (prefs?.getString(
+                    "user-name",
+                    getText(R.string.no_user_name) as String?
+                ) != ""
+            ) {
+                prefs?.getString(
+                    "user-name",
+                    getText(R.string.no_user_name) as String?
+                )
+            } else {
+                getText(R.string.no_user_name)
+            }}"
+
     }
 }

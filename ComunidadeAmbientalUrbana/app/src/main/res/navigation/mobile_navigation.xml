@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.comunidadeambientalurbana.ui.home.HomeFragment"
+        android:name="com.example.comunidadeambientalurbana.mainActivityFragments.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_my_feed"
-        android:name="com.example.comunidadeambientalurbana.ui.newsFeed.NewsFeedFragment"
+        android:name="com.example.comunidadeambientalurbana.mainActivityFragments.newsFeed.NewsFeedFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/news_feed" />
 
     <fragment
         android:id="@+id/navigation_preferences"
-        android:name="com.example.comunidadeambientalurbana.ui.notifications.PreferencesFragment"
+        android:name="com.example.comunidadeambientalurbana.mainActivityFragments.notifications.PreferencesFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_preferences" />
 </navigation>

@@ -1,4 +1,4 @@
-package com.example.comunidadeambientalurbana.ui.newsFeed
+package com.example.comunidadeambientalurbana.mainActivityFragments.newsFeed
 
 import android.os.Bundle
 import android.view.LayoutInflater

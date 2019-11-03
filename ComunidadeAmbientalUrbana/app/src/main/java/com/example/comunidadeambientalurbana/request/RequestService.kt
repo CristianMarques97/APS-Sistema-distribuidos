@@ -15,7 +15,8 @@ import com.beust.klaxon.Klaxon
 import com.example.comunidadeambientalurbana.R
 import com.example.comunidadeambientalurbana.environment.Environment
 import com.example.comunidadeambientalurbana.request.dtos.FeedNews
-import com.example.comunidadeambientalurbana.ui.newsFeed.adapters.NewsAdapter
+import com.example.comunidadeambientalurbana.mainActivityFragments.newsFeed.adapters.NewsAdapter
+import java.lang.Exception
 
 class RequestService {
 
@@ -23,21 +24,26 @@ class RequestService {
 
             fun getNewsByTopic(activity: Activity, topic: String) {
                 val fila = Volley.newRequestQueue(activity)   // Cria um objeto para adicionar a fila de requisições
-                val url = "${Environment.FEED_API_BASE_URL}?${Environment.REGION}&q=$topic" // URL da requisição
+                val url = "${Environment.FEED_API_BASE_URL}?${Environment.REGION}&q=$topic&count=${Environment.QTDE_NEWS}" // URL da requisição
                 Log.d("Resquest Url", url)
                     // Cria um objeto contendo a requisição
                 val request = object: StringRequest(
                     Request.Method.GET,     // metodo de requisição HTTP
                     url,
                     Response.Listener { response ->   // Listener de resposta com sucesso
-                        val newsFeed = Klaxon().parse<FeedNews>(response.toString())!!
+                        try {
+                            val newsFeed = Klaxon().parse<FeedNews>(response.toString())!!
 
-                        val recycleView = activity.findViewById<RecyclerView>(R.id.newsList)
-                        recycleView.layoutManager = GridLayoutManager(activity,1)
-                       val newsAdapter = NewsAdapter(activity, newsFeed.value.toList())
-                        recycleView.adapter = newsAdapter
-                        activity.findViewById<ConstraintLayout>(R.id.LoadLayout).visibility = View.GONE
 
+                            val recycleView = activity.findViewById<RecyclerView>(R.id.newsList)
+                            recycleView.layoutManager = GridLayoutManager(activity, 1)
+                            val newsAdapter = NewsAdapter(activity, newsFeed.value.toList())
+                            recycleView.adapter = newsAdapter
+                            activity.findViewById<ConstraintLayout>(R.id.LoadLayout).visibility =
+                                View.GONE
+                        }catch (ex: Exception) {
+
+                        }
                     }, Response.ErrorListener { error ->    // Listener de resposta com Falha
                         Toast.makeText(activity, activity.getText(R.string.load_error_message), Toast.LENGTH_SHORT).show()
                     }

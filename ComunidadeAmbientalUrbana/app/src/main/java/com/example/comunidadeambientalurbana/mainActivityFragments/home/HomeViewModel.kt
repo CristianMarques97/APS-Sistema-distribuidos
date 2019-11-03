@@ -1,4 +1,4 @@
-package com.example.comunidadeambientalurbana.ui.home
+package com.example.comunidadeambientalurbana.mainActivityFragments.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
