@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:dist="http://schemas.android.com/apk/distribution"
-    package="com.example.comunidadeambientalurbana">
+    package="br.com.unip.aps.comunidadeambientalurbana">
 
     <dist:module dist:instant="true" />
 
@@ -14,14 +14,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".NewsDetailsActivity"
-            android:parentActivityName=".MainActivity">
+        <activity android:name="br.com.unip.aps.comunidadeambientalurbana.newsDetails.NewsDetailsActivity"
+            android:parentActivityName="br.com.unip.aps.comunidadeambientalurbana.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
+                android:value="br.com.unip.aps.comunidadeambientalurbana.MainActivity"/>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name="br.com.unip.aps.comunidadeambientalurbana.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

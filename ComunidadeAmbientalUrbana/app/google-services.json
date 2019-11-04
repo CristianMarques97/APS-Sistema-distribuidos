@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "823681035316",
+    "firebase_url": "https://aps-sistemas-distruidos.firebaseio.com",
+    "project_id": "aps-sistemas-distruidos",
+    "storage_bucket": "aps-sistemas-distruidos.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:823681035316:android:c8f8c0590c3df9f9faee61",
+        "android_client_info": {
+          "package_name": "br.com.unip.aps.comunidadeambientalurbana"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "823681035316-h5fdfmglg339fcf5dtqp69bj65pkid50.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrq0mJOeQyHew1PZV3Q9QkEYK2eOb0s-Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "823681035316-h5fdfmglg339fcf5dtqp69bj65pkid50.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
