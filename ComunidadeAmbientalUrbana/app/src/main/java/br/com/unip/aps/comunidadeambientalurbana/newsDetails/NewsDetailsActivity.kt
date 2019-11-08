@@ -4,30 +4,42 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Html
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import br.com.unip.aps.comunidadeambientalurbana.R
 import br.com.unip.aps.comunidadeambientalurbana.environment.Environment
+import br.com.unip.aps.comunidadeambientalurbana.request.RequestService
+import br.com.unip.aps.comunidadeambientalurbana.request.callBacks.CommentsCallbacks
 import br.com.unip.aps.comunidadeambientalurbana.request.dtos.Commentary
 import com.beust.klaxon.Klaxon
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
 
-class NewsDetailsActivity : AppCompatActivity() {
+class NewsDetailsActivity : AppCompatActivity(), CommentsCallbacks {
 
+    var newsUrl = ""
+    lateinit var commentsList: MutableList<Commentary>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val prefs = getSharedPreferences("appConfig", Context.MODE_PRIVATE)
-        setTheme(if(prefs.getBoolean("darkTheme", false)) {
-            R.style.DarkAppThemeNoActionBar
-        } else {
-            R.style.AppThemeNoActionBar
+
+
+        val prefs = getSharedPreferences("appConfig", Context.MODE_PRIVATE) //
+        setTheme(if(prefs.getBoolean("darkTheme", false)) {          // Configura o modo escuro
+            R.style.DarkThemeAppTheme                                             //
+        } else {                                                                  //
+            R.style.AppTheme
         })
+
+
+//        Recupera dos dados enviados na intent
 
         title = getText(R.string.details_activity_name)
         val args =intent?.extras?.getBundle("newsDetails")
@@ -39,69 +51,52 @@ class NewsDetailsActivity : AppCompatActivity() {
             R.string.publisher_name
         )}: ${args?.getString("provider")}"
         findViewById<TextView>(R.id.detailsNewsContentDescription).text = args?.getString("description")
-        findViewById<TextView>(R.id.newsUrl).setOnClickListener{ Toast.makeText(this, "Navegando Para: ${args?.getString("url")}", Toast.LENGTH_SHORT).show()}
+        newsUrl = args?.getString("url").toString()
         findViewById<TextView>(R.id.articlePublishDate).text = args?.getString("datePublished")
         findViewById<TextView>(R.id.newsCategory).text = args?.getString("category")
 
-        val toolbar = findViewById<Toolbar>(R.id.detailsToolbar)
-        setSupportActionBar(toolbar)
+//        define o botão voltar
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        RequestService.getComments(newsUrl, this)
     }
 
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.news_details_menu,menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when(item?.itemId) {
-            R.id.shareNews -> {
+//    função do botão de compartilhar
+        fun shareButton(view: View){
                 val shareIntent = Intent()
                 shareIntent.action = Intent.ACTION_SEND
                 shareIntent.putExtra(Intent.EXTRA_TEXT, intent?.extras?.getBundle("newsDetails")?.getString("url"))
                 shareIntent.type = "text/plain"
                 startActivity(Intent.createChooser(shareIntent, "${getText(R.string.shareNews)}: "))
-            }
         }
-        return super.onOptionsItemSelected(item)
+
+//    Navega para activity com a página carregada em uma webView
+    fun navigateNews(view: View) {
+        intent = Intent(this, WebNewsActivity::class.java)
+        intent.putExtra("newsUrl", newsUrl)
+        startActivity(intent)
     }
+
+
 
     override fun onStart() {
         super.onStart()
+    }
 
-        val args =intent?.extras?.getBundle("newsDetails")
-       val noticiaUrl = args!!.getString("url")
+    fun sendCommentary(view: View) {
+        var snack = Snackbar.make(findViewById(R.id.floatingActionButton2),"Comentário Enviado", Snackbar.LENGTH_SHORT)
+        var view = snack.view
+                var tv = view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
+                        tv.setTextColor(getColor(R.color.colorAccent))
+            snack.show()
+    }
 
-        val firebaseDatabase = FirebaseFirestore.getInstance()
 
-        val collection = noticiaUrl.replace("/", "").replace("https:","").replace("http:","")
+    override fun volleyResponse(commentsList: MutableList<Commentary>) {
 
-        firebaseDatabase.collection(Environment.firestorePath[0])
-            .document(collection)
-            .get()
-            .addOnSuccessListener { result ->
-
-               val data = result.data?.get("comentários") as ArrayList<String>
-                val commentList = mutableListOf<Commentary>()
-                for(comments in data) {
-                    var nome = ""
-                    var comment = ""
-                    var i = 0
-                    while(comments[i] !== '-') {
-                        nome += comments[i]
-                        i ++
-                    }
-                    nome = nome.substring(0, nome.length-1)
-                    comment = comments.substring(nome.length + 2)
-
-                    commentList.add(Commentary(nome,comment))
-
-                }
-                Log.d("result", "${data}")
-
-            }
-
+        this.commentsList = commentsList
+        Log.d("Lista",commentsList.toString())
 
     }
 

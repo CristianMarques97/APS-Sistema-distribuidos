@@ -16,6 +16,10 @@ import com.beust.klaxon.Klaxon
 import br.com.unip.aps.comunidadeambientalurbana.environment.Environment
 import br.com.unip.aps.comunidadeambientalurbana.request.dtos.FeedNews
 import br.com.unip.aps.comunidadeambientalurbana.mainActivityFragments.newsFeed.adapters.NewsAdapter
+import br.com.unip.aps.comunidadeambientalurbana.request.callBacks.CommentsCallbacks
+import br.com.unip.aps.comunidadeambientalurbana.request.callBacks.NewsCallback
+import br.com.unip.aps.comunidadeambientalurbana.request.dtos.Commentary
+import com.google.firebase.firestore.FirebaseFirestore
 import java.lang.Exception
 
 class RequestService {
@@ -34,17 +38,11 @@ class RequestService {
                         try {
                             val newsFeed = Klaxon().parse<FeedNews>(response.toString())!!
 
+                            if(activity is NewsCallback) {
+                               val listener = activity as NewsCallback
+                               listener.volleyResponse(newsFeed.value.toList())
+                            }
 
-                            val recycleView = activity.findViewById<RecyclerView>(R.id.newsList)
-                            recycleView.layoutManager = GridLayoutManager(activity, 1)
-                            val newsAdapter =
-                                NewsAdapter(
-                                    activity,
-                                    newsFeed.value.toList()
-                                )
-                            recycleView.adapter = newsAdapter
-                            activity.findViewById<ConstraintLayout>(R.id.LoadLayout).visibility =
-                                View.GONE
                         }catch (ex: Exception) {
 
                         }
@@ -67,5 +65,49 @@ class RequestService {
             }
 
 
+        fun getComments(newsID: String, context: Activity): MutableList<Commentary> {
+            var commentList = mutableListOf<Commentary>()
+
+            val firebaseDatabase = FirebaseFirestore.getInstance()
+
+            val collection = newsID.replace("/", "").replace("https:","").replace("http:","")
+
+            firebaseDatabase.collection(Environment.firestorePath[0])
+                .document(collection)
+                .get()
+                .addOnSuccessListener { result ->
+
+                    try {
+                        val data = result.data?.get("comentários") as ArrayList<String>
+                        for (comments in data) {
+                            var nome = ""
+                            var i = 0
+                            while (comments[i] !== '-') {
+                                nome += comments[i]
+                                i++
+                            }
+                            nome = nome.substring(0, nome.length - 1)
+                            var comment = comments.substring(nome.length + 2)
+
+                            commentList.add(Commentary(nome, comment))
+
+                        }
+                        Log.d("result", "${data}")
+
+                        if (context is CommentsCallbacks) {
+                            val listener = context as CommentsCallbacks
+                            listener.volleyResponse(commentList)
+                        }
+
+                    }catch (e: Exception) {
+
+                    }
+                }
+
+            return commentList
+
+        }
     }
+
+
 }

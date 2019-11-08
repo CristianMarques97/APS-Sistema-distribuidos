@@ -6,6 +6,7 @@
     <dist:module dist:instant="true" />
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
 
     <application
         android:allowBackup="true"
@@ -13,18 +14,27 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name="br.com.unip.aps.comunidadeambientalurbana.newsDetails.NewsDetailsActivity"
-            android:parentActivityName="br.com.unip.aps.comunidadeambientalurbana.MainActivity">
+        android:theme="@style/AppTheme"
+        android:persistent="true">
+        <activity android:name=".newsDetails.WebNewsActivity"
+            android:parentActivityName=".newsDetails.NewsDetailsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="br.com.unip.aps.comunidadeambientalurbana.MainActivity"/>
+                android:value=".newsDetails.NewsDetailsActivity" />
         </activity>
         <activity
-            android:name="br.com.unip.aps.comunidadeambientalurbana.MainActivity"
+            android:name=".newsDetails.NewsDetailsActivity"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="br.com.unip.aps.comunidadeambientalurbana.MainActivity" />
+        </activity>
+        <activity
+            android:name=".MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

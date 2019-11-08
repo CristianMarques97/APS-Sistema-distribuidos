@@ -14,5 +14,7 @@
     <string name="shareNews">Compartilhar via</string>
     <string name="welcome">Bem-vindo</string>
     <string name="no_user_name">Visitante</string>
+    <string name="nenhum_coment_rio_neste_t_pico">Nenhum comentário neste tópico...</string>
+    <string name="abrir_no_chrome">Abrir no chrome</string>
 
 </resources>
