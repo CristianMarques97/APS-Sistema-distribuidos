@@ -129,7 +129,7 @@ class NewsDetailsActivity : AppCompatActivity(), CommentsCallbacks {
                 i++
             }
             nome = nome.substring(0, nome.length - 1)
-            val formatedComment = it.substring(nome.length + 2)
+            val formatedComment = it.substring(nome.length + 3)
 
             commentsList.add(Commentary(nome, formatedComment))
 

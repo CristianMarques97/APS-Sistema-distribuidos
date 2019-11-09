@@ -58,51 +58,6 @@ class RequestService {
                 fila.add(request)
             }
 
-
-        fun getComments(newsID: String, context: Activity): MutableList<Commentary> {
-            val commentList = mutableListOf<Commentary>()
-
-            val firebaseDatabase = FirebaseFirestore.getInstance()
-
-            val collection = newsID.replace("/", "").replace("https:","").replace("http:","")
-
-            firebaseDatabase.collection(Environment.firestorePath[0])
-                .document(collection)
-                .get()
-                .addOnSuccessListener { result ->
-
-                    try {
-                        val data = result.data?.get("comentários") as ArrayList<String>
-                        for (comments in data) {
-                            var nome = ""
-                            var i = 0
-                            while (comments[i] != '-') {
-                                nome += comments[i]
-                                i++
-                            }
-                            nome = nome.substring(0, nome.length - 1)
-                            val comment = comments.substring(nome.length + 2)
-
-                            commentList.add(Commentary(nome, comment))
-
-                        }
-                        Log.d("result", "${data}")
-
-                        if (context is CommentsCallbacks) {
-                            val listener = context as CommentsCallbacks
-                            listener.onCommentaryReceived(commentList)
-                        }
-
-                    }catch (e: Exception) {
-
-                    }
-                }
-
-            return commentList
-
-        }
-
-
         fun addCommentary(context: Activity, comment: String, newsUrl: String, commentList: MutableList<Commentary>) {
 
             val firebaseDatabase = FirebaseFirestore.getInstance()
