@@ -1,26 +1,20 @@
 package br.com.unip.aps.comunidadeambientalurbana.request
 
 import android.app.Activity
+import android.content.Context
 import android.util.Log
-import android.view.View
 import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import br.com.unip.aps.comunidadeambientalurbana.R
-import com.android.volley.Request
+import br.com.unip.aps.comunidadeambientalurbana.environment.Environment
+import br.com.unip.aps.comunidadeambientalurbana.request.callBacks.CommentsCallbacks
+import br.com.unip.aps.comunidadeambientalurbana.request.callBacks.NewsCallback
+import br.com.unip.aps.comunidadeambientalurbana.request.dtos.Commentary
+import br.com.unip.aps.comunidadeambientalurbana.request.dtos.FeedNews
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.beust.klaxon.Klaxon
-import br.com.unip.aps.comunidadeambientalurbana.environment.Environment
-import br.com.unip.aps.comunidadeambientalurbana.request.dtos.FeedNews
-import br.com.unip.aps.comunidadeambientalurbana.mainActivityFragments.newsFeed.adapters.NewsAdapter
-import br.com.unip.aps.comunidadeambientalurbana.request.callBacks.CommentsCallbacks
-import br.com.unip.aps.comunidadeambientalurbana.request.callBacks.NewsCallback
-import br.com.unip.aps.comunidadeambientalurbana.request.dtos.Commentary
 import com.google.firebase.firestore.FirebaseFirestore
-import java.lang.Exception
 
 class RequestService {
 
@@ -32,7 +26,7 @@ class RequestService {
                 Log.d("Resquest Url", url)
                     // Cria um objeto contendo a requisição
                 val request = object: StringRequest(
-                    Request.Method.GET,     // metodo de requisição HTTP
+                    Method.GET,     // metodo de requisição HTTP
                     url,
                     Response.Listener { response ->   // Listener de resposta com sucesso
                         try {
@@ -66,7 +60,7 @@ class RequestService {
 
 
         fun getComments(newsID: String, context: Activity): MutableList<Commentary> {
-            var commentList = mutableListOf<Commentary>()
+            val commentList = mutableListOf<Commentary>()
 
             val firebaseDatabase = FirebaseFirestore.getInstance()
 
@@ -82,12 +76,12 @@ class RequestService {
                         for (comments in data) {
                             var nome = ""
                             var i = 0
-                            while (comments[i] !== '-') {
+                            while (comments[i] != '-') {
                                 nome += comments[i]
                                 i++
                             }
                             nome = nome.substring(0, nome.length - 1)
-                            var comment = comments.substring(nome.length + 2)
+                            val comment = comments.substring(nome.length + 2)
 
                             commentList.add(Commentary(nome, comment))
 
@@ -96,7 +90,7 @@ class RequestService {
 
                         if (context is CommentsCallbacks) {
                             val listener = context as CommentsCallbacks
-                            listener.volleyResponse(commentList)
+                            listener.onCommentaryReceived(commentList)
                         }
 
                     }catch (e: Exception) {
@@ -105,6 +99,55 @@ class RequestService {
                 }
 
             return commentList
+
+        }
+
+
+        fun addCommentary(context: Activity, comment: String, newsUrl: String, commentList: MutableList<Commentary>) {
+
+            val firebaseDatabase = FirebaseFirestore.getInstance()
+            val newComment = "${context.getSharedPreferences("appConfig", Context.MODE_PRIVATE).getString("user-name", "")} - $comment"
+            var users = mutableListOf(newComment)
+            commentList.forEach {
+                users.add("${it.nome} - ${it.commentary}")
+            }
+            val user = hashMapOf("comentarios" to users)
+
+            val urlID = newsUrl.replace("/", "").replace("https:","").replace("http:","")
+
+            firebaseDatabase.collection(Environment.firestorePath[0])
+                .document(urlID)
+                .set(user)
+                .addOnSuccessListener {response ->
+                    Log.d("Sucesso","Envio com Sucesso")
+
+                    if (context is CommentsCallbacks) {
+                        val listener = context as CommentsCallbacks
+                        listener.onCommentaryAdd()
+                    }
+                }
+        }
+
+        fun initFirestoreListener(context: Activity, newsUrl: String) {
+            val firebaseDatabase = FirebaseFirestore.getInstance()
+            firebaseDatabase.collection(Environment.firestorePath[0])
+                .document(newsUrl.replace("/", "").replace("https:","").replace("http:",""))
+                .addSnapshotListener {snapshot, e ->
+                    if(e!=null) {
+                        Log.e("Firebase Error", "Erro ao se conectar ao firebase Snapshot")
+                    }
+
+                    if(snapshot != null && snapshot.exists()) {
+                        Log.d("Snapshot return", "${snapshot.data}")
+
+                        if (context is CommentsCallbacks) {
+                            val listener = context as CommentsCallbacks
+                            snapshot.data?.let { listener.onCommentaryListChanged(it) }
+                        }
+                    }
+
+                }
+
 
         }
     }

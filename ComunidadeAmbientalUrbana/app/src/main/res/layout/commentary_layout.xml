@@ -27,14 +27,16 @@
                     android:id="@+id/imageView2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    tools:srcCompat="@tools:sample/avatars" />
+                    android:layout_weight="4"
+                    app:srcCompat="@drawable/round_account_circle_black_48"
+                    tools:srcCompat="@drawable/round_account_circle_black_48" />
 
                 <TextView
                     android:id="@+id/commentaryUserName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
                     android:layout_weight="1" />
 
             </LinearLayout>

@@ -20,8 +20,6 @@ import com.google.firebase.FirebaseApp
 
 class MainActivity : AppCompatActivity(), NewsCallback {
 
-
-    companion object { lateinit var newsFeed: FeedNews }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         FirebaseApp.initializeApp(this)
@@ -49,9 +47,6 @@ class MainActivity : AppCompatActivity(), NewsCallback {
 
     override fun onStart() {
         super.onStart()
-        //        RequestService.getNewsByTopic(this, "Ambiente")
-
-
     }
 
 //    Callback da Resposta do bing

@@ -18,14 +18,14 @@
             <ScrollView
                 android:id="@+id/scrollView2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content">
 
                     <TextView
                         android:id="@+id/detailsNewsTitle"
@@ -46,6 +46,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="36dp"
+                        android:contentDescription="@string/thumbnail_da_not_cia"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/detailsNewsTitle"
@@ -117,9 +118,9 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="32dp"
+                        android:layout_marginTop="80dp"
                         android:orientation="vertical"
-                        android:paddingBottom="100dp"
+                        android:paddingBottom="20dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
@@ -133,7 +134,7 @@
                             android:orientation="horizontal">
 
                             <EditText
-                                android:id="@+id/editText"
+                                android:id="@+id/editComments"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
@@ -161,8 +162,11 @@
                         </LinearLayout>
 
                         <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/commentsRecycleView"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="60dp"
+                            android:paddingBottom="60dp"
                             android:scrollbars="vertical"
                             android:visibility="gone" />
 
@@ -174,7 +178,8 @@
                             android:layout_marginTop="20dp"
                             android:layout_marginEnd="24dp"
                             android:text="@string/nenhum_coment_rio_neste_t_pico"
-                            android:textAlignment="center" />
+                            android:textAlignment="center"
+                            android:visibility="visible" />
                     </LinearLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -193,6 +198,7 @@
         android:clickable="true"
         android:onClick="shareButton"
         android:layout_gravity="bottom|end"
-        app:srcCompat="@drawable/baseline_share_black_48" />
+        app:srcCompat="@drawable/baseline_share_black_48"
+        android:focusable="true" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

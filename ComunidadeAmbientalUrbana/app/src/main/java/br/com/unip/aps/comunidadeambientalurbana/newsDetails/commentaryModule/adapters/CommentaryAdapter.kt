@@ -16,20 +16,10 @@ class CommentaryAdapter constructor(): RecyclerView.Adapter<CommentaryViewHolder
 
     lateinit var context: Context
     lateinit var commentaryList: List<Commentary>
-    val firebaseDatabase = FirebaseFirestore.getInstance()
 
-    constructor(context: Context, noticiaUrl: String,commentaryList: List<Commentary>): this() {
+    constructor(context: Context, commentaryList: List<Commentary>): this() {
         this.context = context
-        val collection = noticiaUrl.replace("/", "")
-        Log.d("Coleção", collection)
-        firebaseDatabase.collection(collection)
-            .document(Environment.firestorePath[1])
-            .get()
-            .addOnSuccessListener { result ->
-              Log.d("result", "$result")
-            }
-
-
+        this.commentaryList = commentaryList
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentaryViewHolder {

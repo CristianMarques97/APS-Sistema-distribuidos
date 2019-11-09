@@ -4,29 +4,26 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Html
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.widget.Toolbar
+import android.widget.*
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import br.com.unip.aps.comunidadeambientalurbana.R
-import br.com.unip.aps.comunidadeambientalurbana.environment.Environment
+import br.com.unip.aps.comunidadeambientalurbana.newsDetails.commentaryModule.adapters.CommentaryAdapter
 import br.com.unip.aps.comunidadeambientalurbana.request.RequestService
 import br.com.unip.aps.comunidadeambientalurbana.request.callBacks.CommentsCallbacks
 import br.com.unip.aps.comunidadeambientalurbana.request.dtos.Commentary
-import com.beust.klaxon.Klaxon
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
 
 class NewsDetailsActivity : AppCompatActivity(), CommentsCallbacks {
 
+
+
     var newsUrl = ""
-    lateinit var commentsList: MutableList<Commentary>
+    var commentsList = mutableListOf<Commentary>()
+    lateinit var recyclerView: RecyclerView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -58,7 +55,7 @@ class NewsDetailsActivity : AppCompatActivity(), CommentsCallbacks {
 //        define o botão voltar
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        RequestService.getComments(newsUrl, this)
+        RequestService.initFirestoreListener(this, newsUrl)
     }
 
 
@@ -82,22 +79,66 @@ class NewsDetailsActivity : AppCompatActivity(), CommentsCallbacks {
 
     override fun onStart() {
         super.onStart()
+        recyclerView = findViewById(R.id.commentsRecycleView)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
     }
 
     fun sendCommentary(view: View) {
-        var snack = Snackbar.make(findViewById(R.id.floatingActionButton2),"Comentário Enviado", Snackbar.LENGTH_SHORT)
-        var view = snack.view
-                var tv = view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
-                        tv.setTextColor(getColor(R.color.colorAccent))
+        if(findViewById<EditText>(R.id.editComments).text.toString().isEmpty()) {
+            val snack = Snackbar.make(findViewById(R.id.floatingActionButton2),getString(R.string.empty_comment), Snackbar.LENGTH_SHORT)
+            val view = snack.view
+            val tv = view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
+            tv.setTextColor(getColor(R.color.snackbar_button))
             snack.show()
+            return
+        }
+        RequestService.addCommentary(this, findViewById<EditText>(R.id.editComments).text.toString(), newsUrl, commentsList)
     }
 
 
-    override fun volleyResponse(commentsList: MutableList<Commentary>) {
-
+    override fun onCommentaryReceived(commentsList: MutableList<Commentary>) {
         this.commentsList = commentsList
         Log.d("Lista",commentsList.toString())
 
+    }
+
+    override fun onCommentaryAdd() {
+        findViewById<EditText>(R.id.editComments).text = null
+        val snack = Snackbar.make(findViewById(R.id.floatingActionButton2),getString(R.string.commentary_send), Snackbar.LENGTH_SHORT)
+        val view = snack.view
+                val tv = view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
+                        tv.setTextColor(getColor(R.color.snackbar_button))
+            snack.show()
+    }
+
+    override fun onCommentaryListChanged(comment: MutableMap<String, Any>) {
+        if(comment.isEmpty()) {
+           recyclerView.visibility = View.GONE
+            findViewById<TextView>(R.id.noCommentaryText).visibility = View.VISIBLE
+            return
+        }
+        val listOfComments = comment["comentarios"] as ArrayList<String>
+        commentsList = mutableListOf()
+        listOfComments.forEach {
+            Log.d("nome", it)
+            var nome = ""
+            var i = 0
+            while (it[i] != '-') {
+                nome += it[i]
+                i++
+            }
+            nome = nome.substring(0, nome.length - 1)
+            val formatedComment = it.substring(nome.length + 2)
+
+            commentsList.add(Commentary(nome, formatedComment))
+
+        }
+
+        recyclerView.adapter = CommentaryAdapter(this, commentsList)
+
+        findViewById<TextView>(R.id.noCommentaryText).visibility = View.GONE
+        recyclerView.visibility = View.VISIBLE
     }
 
 

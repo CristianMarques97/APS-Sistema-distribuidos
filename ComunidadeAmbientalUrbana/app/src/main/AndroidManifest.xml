@@ -16,7 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:persistent="true">
-        <activity android:name=".newsDetails.WebNewsActivity"
+        <activity
+            android:configChanges="orientation|screenSize"
+            android:name=".newsDetails.WebNewsActivity"
             android:parentActivityName=".newsDetails.NewsDetailsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -24,14 +26,17 @@
         </activity>
         <activity
             android:name=".newsDetails.NewsDetailsActivity"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity"
+            android:configChanges="orientation|screenSize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="br.com.unip.aps.comunidadeambientalurbana.MainActivity" />
         </activity>
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:configChanges="orientation|screenSize"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

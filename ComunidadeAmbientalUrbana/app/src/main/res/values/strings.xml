@@ -16,5 +16,8 @@
     <string name="no_user_name">Visitante</string>
     <string name="nenhum_coment_rio_neste_t_pico">Nenhum comentário neste tópico...</string>
     <string name="abrir_no_chrome">Abrir no chrome</string>
+    <string name="thumbnail_da_not_cia">Thumbnail da notícia</string>
+    <string name="empty_comment">Não é possível enviar comentários em branco</string>
+    <string name="commentary_send">Comentário Enviado</string>
 
 </resources>

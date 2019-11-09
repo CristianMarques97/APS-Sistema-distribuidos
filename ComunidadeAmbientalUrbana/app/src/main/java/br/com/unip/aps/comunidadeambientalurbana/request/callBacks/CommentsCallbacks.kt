@@ -3,5 +3,7 @@ package br.com.unip.aps.comunidadeambientalurbana.request.callBacks
 import br.com.unip.aps.comunidadeambientalurbana.request.dtos.Commentary
 
 interface CommentsCallbacks {
-        fun volleyResponse(commentsList: MutableList<Commentary>)
+        fun onCommentaryReceived(commentsList: MutableList<Commentary>)
+        fun onCommentaryListChanged(comment: MutableMap<String, Any>)
+        fun onCommentaryAdd()
 }
