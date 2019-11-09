@@ -58,7 +58,7 @@ class NewsDetailsActivity : AppCompatActivity(), CommentsCallbacks {
 
 
 //    função do botão de compartilhar
-        fun shareButton() {
+        fun shareButton(view: View) {
                 val shareIntent = Intent()
                 shareIntent.action = Intent.ACTION_SEND
                 shareIntent.putExtra(Intent.EXTRA_TEXT, intent?.extras?.getBundle("newsDetails")?.getString("url"))
@@ -67,7 +67,7 @@ class NewsDetailsActivity : AppCompatActivity(), CommentsCallbacks {
         }
 
 //    Navega para activity com a página carregada em uma webView
-    fun navigateNews() {
+    fun navigateNews(view: View) {
         intent = Intent(this, WebNewsActivity::class.java)
         intent.putExtra("newsUrl", newsUrl)
         startActivity(intent)
@@ -83,11 +83,11 @@ class NewsDetailsActivity : AppCompatActivity(), CommentsCallbacks {
 
     }
 
-    fun sendCommentary() {
+    fun sendCommentary(view: View) {
 //        Verifica se o campo de comentários está vazio
         if(findViewById<EditText>(R.id.editComments).text.toString().isEmpty()) {
 //            Apresenta a snackbar e não envia o comentário ao firebase
-            val snack = Snackbar.make(findViewById(R.id.floatingActionButton2),getString(R.string.empty_comment), Snackbar.LENGTH_SHORT)
+            val snack = Snackbar.make(findViewById(R.id.floatingActionButton),getString(R.string.empty_comment), Snackbar.LENGTH_SHORT)
             val view = snack.view
             val tv = view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
             tv.setTextColor(getColor(R.color.snackbar_button))
@@ -101,7 +101,7 @@ class NewsDetailsActivity : AppCompatActivity(), CommentsCallbacks {
 //    Callback do retorno do firebase
     override fun onCommentaryAdd() {
         findViewById<EditText>(R.id.editComments).text = null
-        val snack = Snackbar.make(findViewById(R.id.floatingActionButton2),getString(R.string.commentary_send), Snackbar.LENGTH_SHORT)
+        val snack = Snackbar.make(findViewById(R.id.floatingActionButton),getString(R.string.commentary_send), Snackbar.LENGTH_SHORT)
         val view = snack.view
                 val tv = view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
                         tv.setTextColor(getColor(R.color.snackbar_button))

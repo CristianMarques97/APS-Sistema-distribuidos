@@ -19,5 +19,6 @@
     <string name="thumbnail_da_not_cia">Thumbnail da notícia</string>
     <string name="empty_comment">Não é possível enviar comentários em branco</string>
     <string name="commentary_send">Comentário Enviado</string>
+    <string name="enviar">Enviar</string>
 
 </resources>
