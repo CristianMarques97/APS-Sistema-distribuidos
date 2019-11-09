@@ -15,6 +15,7 @@ data class FeedNews(
     var value: Array<News>
     ): Serializable
 
+@Suppress("ArrayInDataClass")
 data class News(
     var name: String  = "",
     var url:  String  = "",

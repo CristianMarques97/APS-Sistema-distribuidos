@@ -15,7 +15,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 class CommentaryAdapter constructor(): RecyclerView.Adapter<CommentaryViewHolder>() {
 
     lateinit var context: Context
-    lateinit var commentaryList: List<Commentary>
+    private lateinit var commentaryList: List<Commentary>
 
     constructor(context: Context, commentaryList: List<Commentary>): this() {
         this.context = context
@@ -41,7 +41,7 @@ class CommentaryAdapter constructor(): RecyclerView.Adapter<CommentaryViewHolder
 
 
 class CommentaryViewHolder constructor(itemView: View): RecyclerView.ViewHolder(itemView) {
-        var mComentaryUsername = itemView.findViewById<TextView>(R.id.commentaryUserName)
-        var mComentary =  itemView.findViewById<TextView>(R.id.commentaryText)
+        var mComentaryUsername: TextView = itemView.findViewById(R.id.commentaryUserName)
+        var mComentary: TextView =  itemView.findViewById(R.id.commentaryText)
 
 }

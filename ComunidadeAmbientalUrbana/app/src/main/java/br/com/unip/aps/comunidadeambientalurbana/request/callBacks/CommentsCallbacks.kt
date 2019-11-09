@@ -1,9 +1,7 @@
 package br.com.unip.aps.comunidadeambientalurbana.request.callBacks
 
-import br.com.unip.aps.comunidadeambientalurbana.request.dtos.Commentary
-
+// Interface de ponte entre as requisições do firebase e a Activity que o utiliza
 interface CommentsCallbacks {
-        fun onCommentaryReceived(commentsList: MutableList<Commentary>)
         fun onCommentaryListChanged(comment: MutableMap<String, Any>)
         fun onCommentaryAdd()
 }

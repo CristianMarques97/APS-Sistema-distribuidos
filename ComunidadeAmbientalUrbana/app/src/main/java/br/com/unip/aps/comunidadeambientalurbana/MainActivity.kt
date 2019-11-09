@@ -3,7 +3,6 @@ package br.com.unip.aps.comunidadeambientalurbana
 import android.content.Context
 import android.os.Bundle
 import android.view.View
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.findNavController
@@ -14,8 +13,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.unip.aps.comunidadeambientalurbana.mainActivityFragments.newsFeed.adapters.NewsAdapter
 import br.com.unip.aps.comunidadeambientalurbana.request.callBacks.NewsCallback
-import br.com.unip.aps.comunidadeambientalurbana.request.dtos.FeedNews
 import br.com.unip.aps.comunidadeambientalurbana.request.dtos.News
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.FirebaseApp
 
 class MainActivity : AppCompatActivity(), NewsCallback {
@@ -45,12 +44,8 @@ class MainActivity : AppCompatActivity(), NewsCallback {
         navView.setupWithNavController(navController)
     }
 
-    override fun onStart() {
-        super.onStart()
-    }
-
 //    Callback da Resposta do bing
-    override fun volleyResponse(news: List<News>) {
+    override fun onNewsReceived(news: List<News>) {
         val recycleView = this.findViewById<RecyclerView>(R.id.newsList)
         recycleView.layoutManager = GridLayoutManager(this, 1)
         val newsAdapter =

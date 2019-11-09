@@ -30,11 +30,12 @@ class RequestService {
                     url,
                     Response.Listener { response ->   // Listener de resposta com sucesso
                         try {
+//                            Converte JSON do servidor da azure para Objeto
                             val newsFeed = Klaxon().parse<FeedNews>(response.toString())!!
-
+//                          Chama o callback da requisição
                             if(activity is NewsCallback) {
                                val listener = activity as NewsCallback
-                               listener.volleyResponse(newsFeed.value.toList())
+                               listener.onNewsReceived(newsFeed.value.toList())
                             }
 
                         }catch (ex: Exception) {
@@ -59,23 +60,27 @@ class RequestService {
             }
 
         fun addCommentary(context: Activity, comment: String, newsUrl: String, commentList: MutableList<Commentary>) {
-
+//           Busca a instancia do firebase
             val firebaseDatabase = FirebaseFirestore.getInstance()
+//            Adiciona o nome do usuário ao comentário
             val newComment = "${context.getSharedPreferences("appConfig", Context.MODE_PRIVATE).getString("user-name", "")} - $comment"
-            var users = mutableListOf(newComment)
+//            Adiciona o comentário em uma lista dinâmica
+            val users = mutableListOf(newComment)
+//             Realiza um merge da lista de comentário com a lista que possui o novo usuário, realizando a formatação com os nomes do usuário
             commentList.forEach {
                 users.add("${it.nome} - ${it.commentary}")
             }
+//            Cria a HashMap com o modelo do firebase
             val user = hashMapOf("comentarios" to users)
-
+//          Remove protocolo e barras e utiliza a url como chave no firebase
             val urlID = newsUrl.replace("/", "").replace("https:","").replace("http:","")
-
+//          Adiciona a nova lista de comentários
             firebaseDatabase.collection(Environment.firestorePath[0])
                 .document(urlID)
                 .set(user)
                 .addOnSuccessListener {response ->
                     Log.d("Sucesso","Envio com Sucesso")
-
+//                  Realiza o callback da requisição
                     if (context is CommentsCallbacks) {
                         val listener = context as CommentsCallbacks
                         listener.onCommentaryAdd()
@@ -83,18 +88,23 @@ class RequestService {
                 }
         }
 
+//        Função que inicia o listener do firestore
         fun initFirestoreListener(context: Activity, newsUrl: String) {
+//    Busca a instancia do firebase
             val firebaseDatabase = FirebaseFirestore.getInstance()
+//    Caminho do firebase
             firebaseDatabase.collection(Environment.firestorePath[0])
                 .document(newsUrl.replace("/", "").replace("https:","").replace("http:",""))
+//                    Adiciona um listener para escutar mudança na base de dados(Firestore)
                 .addSnapshotListener {snapshot, e ->
+//                    Verificação de sucesso no retorno
                     if(e!=null) {
                         Log.e("Firebase Error", "Erro ao se conectar ao firebase Snapshot")
                     }
-
+//                      Verifica se hove mudanças no firestore
                     if(snapshot != null && snapshot.exists()) {
                         Log.d("Snapshot return", "${snapshot.data}")
-
+//                      Chama o callback da requisição
                         if (context is CommentsCallbacks) {
                             val listener = context as CommentsCallbacks
                             snapshot.data?.let { listener.onCommentaryListChanged(it) }
