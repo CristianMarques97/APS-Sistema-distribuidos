@@ -1,7 +1,9 @@
 package br.com.unip.aps.comunidadeambientalurbana
 
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
+import android.view.OrientationEventListener
 import android.view.View
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
@@ -21,6 +23,9 @@ class MainActivity : AppCompatActivity(), NewsCallback,FeedPlug {
 
 
     lateinit var recyclerView: RecyclerView
+    var  landscapeGridLayoutManager = GridLayoutManager(this, 2)
+    var  portraitGridLayoutManager = GridLayoutManager(this, 1)
+
     private lateinit var newsList: List<News>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +59,12 @@ class MainActivity : AppCompatActivity(), NewsCallback,FeedPlug {
 //    busca o recyclerView
     this.recyclerView = this.findViewById(R.id.newsList)
 //    Define o layout
-    this.recyclerView.layoutManager = GridLayoutManager(this, 1)
+    if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+        this.recyclerView.layoutManager = portraitGridLayoutManager
+    } else {
+        this.recyclerView.layoutManager = landscapeGridLayoutManager
+
+    }
         newsList = news
 //    Define o adapter
         val newsAdapter = NewsAdapter(this, newsList)
@@ -68,6 +78,27 @@ class MainActivity : AppCompatActivity(), NewsCallback,FeedPlug {
     override fun getNews(): List<News> {
         return  this.newsList
     }
+
+    override fun onConfigurationChanged(newConfig: Configuration?) {
+        super.onConfigurationChanged(newConfig)
+        val recyclerView = findViewById<RecyclerView>(R.id.newsList)
+        val orientation = newConfig?.orientation
+
+        if(recyclerView != null) {
+            when (orientation) {
+
+                Configuration.ORIENTATION_LANDSCAPE -> {
+                    recyclerView.layoutManager = landscapeGridLayoutManager
+                }
+
+                Configuration.ORIENTATION_PORTRAIT -> {
+                    recyclerView.layoutManager = portraitGridLayoutManager
+                }
+            }
+        }
+    }
+
+
 
 }
 

@@ -1,4 +1,4 @@
-package br.com.unip.aps.comunidadeambientalurbana.mainActivityFragments.notifications
+package br.com.unip.aps.comunidadeambientalurbana.mainActivityFragments.preferences
 
 import android.content.Context
 import android.os.Bundle
