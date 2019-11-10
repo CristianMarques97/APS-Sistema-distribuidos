@@ -8,6 +8,7 @@ class Environment {
         const val REGION = "mkt=pt-BR"
         const val QTDE_NEWS = "100"
         val firestorePath = arrayOf("noticia","comentarios")
+        const val newsTopic = "ambiente"
     }
 }
 

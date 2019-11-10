@@ -17,6 +17,7 @@
         android:persistent="true">
         <activity
             android:configChanges="orientation|screenSize"
+            android:persistent="true"
             android:name=".newsDetails.WebNewsActivity"
             android:parentActivityName=".newsDetails.NewsDetailsActivity">
             <meta-data
