@@ -15,6 +15,7 @@ import br.com.unip.aps.comunidadeambientalurbana.R
 import br.com.unip.aps.comunidadeambientalurbana.environment.Environment
 import br.com.unip.aps.comunidadeambientalurbana.mainActivityFragments.newsFeed.adapters.NewsAdapter
 import br.com.unip.aps.comunidadeambientalurbana.request.RequestService
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class NewsFeedFragment : Fragment() {
 
@@ -28,7 +29,7 @@ class NewsFeedFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         activity?.findViewById<RecyclerView>(R.id.newsList)?.visibility = View.GONE
-        activity?.findViewById<RecyclerView>(R.id.newsLoadProgress)?.visibility = View.VISIBLE
+        activity?.findViewById<ProgressBar>(R.id.newsLoadProgress)?.visibility = View.VISIBLE
 
         return inflater.inflate(R.layout.news_feed, container, false)
     }
@@ -36,6 +37,8 @@ class NewsFeedFragment : Fragment() {
     override fun onStart() {
         super.onStart()
             activity?.findViewById<SwipeRefreshLayout>(R.id.newsListRefresher)?.setOnRefreshListener{ RequestService.getNewsByTopic(activity!!, Environment.newsTopic)}
+        activity?.findViewById<BottomNavigationView>(R.id.nav_view)
+            ?.menu?.findItem(R.id.navigation_my_feed)?.isEnabled = false
 //        Re-aproveita a lista já buscada na Azure
         if (firstLoad) {
             RequestService.getNewsByTopic(activity!!, Environment.newsTopic)
@@ -55,5 +58,11 @@ class NewsFeedFragment : Fragment() {
 
             }
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        activity?.findViewById<BottomNavigationView>(R.id.nav_view)
+            ?.menu?.findItem(R.id.navigation_my_feed)?.isEnabled = true
     }
 }

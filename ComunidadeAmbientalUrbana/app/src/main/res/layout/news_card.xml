@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
+        app:cardBackgroundColor="?attr/colorBackgroundFloating"
         app:contentPadding="5dp">
 
         <LinearLayout
@@ -34,6 +35,7 @@
                 android:id="@+id/newsPublisher"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
                 android:layout_weight="1"
                 android:text="TextView"
                 android:textAlignment="center" />
@@ -42,6 +44,8 @@
                 android:id="@+id/newsPublishDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="15dp"
                 android:layout_weight="1"
                 android:text="TextView"
                 android:textAlignment="center" />

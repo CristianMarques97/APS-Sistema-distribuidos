@@ -21,13 +21,15 @@ import com.squareup.picasso.Picasso
 class NewsDetailsActivity : AppCompatActivity(), CommentsCallbacks {
 
     var newsUrl = ""
+    var imageRef = ""
     var commentsList = mutableListOf<Commentary>()
+    var instantceData: Bundle? = null
     lateinit var recyclerView: RecyclerView
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        instantceData = savedInstanceState
 //        Configura o tema da activity
         val prefs = getSharedPreferences("appConfig", Context.MODE_PRIVATE)
         setTheme(if(prefs.getBoolean("darkTheme", false)) {
@@ -43,7 +45,8 @@ class NewsDetailsActivity : AppCompatActivity(), CommentsCallbacks {
         setContentView(R.layout.activity_news_details)
 
         findViewById<TextView>(R.id.detailsNewsTitle).text = args?.getString("name")
-        Picasso.get().load(args?.getString("image")).into(findViewById<ImageView>(R.id.detailsNewsThumbnail))
+        imageRef = args?.getString("image").toString()
+        Picasso.get().load(imageRef).into(findViewById<ImageView>(R.id.detailsNewsThumbnail))
         findViewById<TextView>(R.id.detailsNewsProvider).text = "${getText(R.string.publisher_name)}: ${args?.getString("provider")}"
         findViewById<TextView>(R.id.detailsNewsContentDescription).text = args?.getString("description")
         newsUrl = args?.getString("url").toString()
@@ -90,7 +93,7 @@ class NewsDetailsActivity : AppCompatActivity(), CommentsCallbacks {
             val snack = Snackbar.make(findViewById(R.id.floatingActionButton),getString(R.string.empty_comment), Snackbar.LENGTH_SHORT)
             val view = snack.view
             val tv = view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
-            tv.setTextColor(getColor(R.color.snackbar_button))
+            tv.setTextColor(getColor(R.color.snackbar_text))
             snack.show()
             return
         }
@@ -143,7 +146,5 @@ class NewsDetailsActivity : AppCompatActivity(), CommentsCallbacks {
         findViewById<TextView>(R.id.noCommentaryText).visibility = View.GONE
         recyclerView.visibility = View.VISIBLE
     }
-
-
 }
 

@@ -1,11 +1,14 @@
 package br.com.unip.aps.comunidadeambientalurbana
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Bundle
-import android.view.OrientationEventListener
+import android.util.TypedValue
 import android.view.View
 import android.widget.ProgressBar
+import androidx.annotation.ColorInt
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -16,11 +19,11 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import br.com.unip.aps.comunidadeambientalurbana.mainActivityFragments.newsFeed.NewsFeedFragment
 import br.com.unip.aps.comunidadeambientalurbana.mainActivityFragments.newsFeed.adapters.NewsAdapter
-import br.com.unip.aps.comunidadeambientalurbana.request.RequestService
 import br.com.unip.aps.comunidadeambientalurbana.request.callBacks.NewsCallback
 import br.com.unip.aps.comunidadeambientalurbana.request.dtos.News
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.FirebaseApp
+
 
 class MainActivity : AppCompatActivity(), NewsCallback, FeedPlug {
 
@@ -30,6 +33,7 @@ class MainActivity : AppCompatActivity(), NewsCallback, FeedPlug {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
 //        Conecta ao firebase
         FirebaseApp.initializeApp(this)
 //          Define o tema
@@ -57,7 +61,6 @@ class MainActivity : AppCompatActivity(), NewsCallback, FeedPlug {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-
     }
 
     //    Callback da Resposta do bing

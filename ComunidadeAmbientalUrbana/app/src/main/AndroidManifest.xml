@@ -14,10 +14,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
         android:persistent="true">
         <activity
             android:configChanges="orientation|screenSize"
-            android:persistent="true"
             android:name=".newsDetails.WebNewsActivity"
             android:parentActivityName=".newsDetails.NewsDetailsActivity">
             <meta-data
@@ -27,6 +27,7 @@
         <activity
             android:name=".newsDetails.NewsDetailsActivity"
             android:parentActivityName=".MainActivity"
+            android:persistent="true"
             android:configChanges="orientation|screenSize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -36,6 +37,7 @@
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:configChanges="orientation|screenSize"
+            android:persistent="true"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

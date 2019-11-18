@@ -11,6 +11,7 @@ import android.widget.Switch
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import br.com.unip.aps.comunidadeambientalurbana.R
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class PreferencesFragment : Fragment() {
 
@@ -25,7 +26,8 @@ class PreferencesFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-
+        activity?.findViewById<BottomNavigationView>(R.id.nav_view)
+            ?.menu?.findItem(R.id.navigation_preferences)?.isEnabled = false
         val prefs = activity?.getSharedPreferences("appConfig", Context.MODE_PRIVATE)
         val editName = activity?.findViewById<TextView>(R.id.editNameShow)
         editName?.text = prefs!!.getString("user-name", "")
@@ -46,5 +48,11 @@ class PreferencesFragment : Fragment() {
             prefs?.edit()?.putBoolean("darkTheme", darkThemeSwitch.isChecked)?.apply()
             activity?.recreate()
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        activity?.findViewById<BottomNavigationView>(R.id.nav_view)
+            ?.menu?.findItem(R.id.navigation_preferences)?.isEnabled = true
     }
 }
