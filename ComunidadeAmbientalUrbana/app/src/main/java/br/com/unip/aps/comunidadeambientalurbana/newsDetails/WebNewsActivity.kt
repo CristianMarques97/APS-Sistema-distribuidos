@@ -20,7 +20,7 @@ class WebNewsActivity : AppCompatActivity() {
 
         val prefs = getSharedPreferences("appConfig", Context.MODE_PRIVATE)
         setTheme(if(prefs.getBoolean("darkTheme", false)) {
-            R.style.DarkAppThemeNoActionBar
+            R.style.DarkAppThemeNoActionBarWebActivity
         } else {
             R.style.AppThemeNoActionBar
         })

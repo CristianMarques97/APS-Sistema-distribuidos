@@ -1,14 +1,12 @@
 package br.com.unip.aps.comunidadeambientalurbana
 
 import android.content.Context
-import android.content.res.ColorStateList
 import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.View
 import android.widget.ProgressBar
-import androidx.annotation.ColorInt
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -61,6 +59,9 @@ class MainActivity : AppCompatActivity(), NewsCallback, FeedPlug {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+
+        supportActionBar?.title
     }
 
     //    Callback da Resposta do bing

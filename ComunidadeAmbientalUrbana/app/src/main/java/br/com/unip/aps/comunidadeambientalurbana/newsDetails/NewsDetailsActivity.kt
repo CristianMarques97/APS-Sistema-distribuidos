@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.util.Log
 import android.view.View
 import android.widget.*
@@ -87,10 +88,17 @@ class NewsDetailsActivity : AppCompatActivity(), CommentsCallbacks {
     }
 
     fun sendCommentary(view: View) {
-//        Verifica se o campo de comentários está vazio
+//        Verifica se o campo de comentários está vazio ou se o usuário possui um nome
         if(findViewById<EditText>(R.id.editComments).text.toString().isEmpty()) {
 //            Apresenta a snackbar e não envia o comentário ao firebase
             val snack = Snackbar.make(findViewById(R.id.floatingActionButton),getString(R.string.empty_comment), Snackbar.LENGTH_SHORT)
+            val view = snack.view
+            val tv = view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
+            tv.setTextColor(getColor(R.color.snackbar_text))
+            snack.show()
+            return
+        } else if(getSharedPreferences("appConfig", Context.MODE_PRIVATE).getString("user-name", "") == "") {
+            val snack = Snackbar.make(findViewById(R.id.floatingActionButton),getString(R.string.no_user_name_commentary), Snackbar.LENGTH_SHORT)
             val view = snack.view
             val tv = view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
             tv.setTextColor(getColor(R.color.snackbar_text))
@@ -145,6 +153,20 @@ class NewsDetailsActivity : AppCompatActivity(), CommentsCallbacks {
 //          Apresenta a lista de comentários
         findViewById<TextView>(R.id.noCommentaryText).visibility = View.GONE
         recyclerView.visibility = View.VISIBLE
+    }
+
+    override fun onRestoreInstanceState(
+        savedInstanceState: Bundle?,
+        persistentState: PersistableBundle?
+    ) {
+        super.onRestoreInstanceState(savedInstanceState, persistentState)
+        val txt = persistentState?.getString("name")
+        Log.d("txt", txt)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
+        super.onSaveInstanceState(outState, outPersistentState)
+        outPersistentState?.putString("name", findViewById<TextView>(R.id.detailsNewsTitle).text.toString())
     }
 }
 

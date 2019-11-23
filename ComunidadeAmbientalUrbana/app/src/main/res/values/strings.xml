@@ -20,5 +20,13 @@
     <string name="empty_comment">Não é possível enviar comentários em branco</string>
     <string name="commentary_send">Comentário Enviado</string>
     <string name="enviar">Enviar</string>
+    <string name="no_user_name_commentary">Nome de exibição é necessário para postagem de comentários</string>
+    <string name="ferramentas_utilizadas">Ferramentas Utilizadas</string>
+    <string name="preferencias_do_aplicativo">Preferencias do Aplicativo</string>
+    <string name="nome_de_exibi_o">Nome de Exibição</string>
+    <string name="tema_escuro">Tema Escuro</string>
+    <string name="ver_no_github">Ver no Github</string>
+    <string name="bem_vindo_a_cumunidade_ambiental_urbana">Bem-vindo a Cumunidade ambiental Urbana</string>
+    <string name="aproveite_nosso_f_rum_de_coment_rios">Aproveite nosso fórum de comentários.</string>
 
 </resources>
