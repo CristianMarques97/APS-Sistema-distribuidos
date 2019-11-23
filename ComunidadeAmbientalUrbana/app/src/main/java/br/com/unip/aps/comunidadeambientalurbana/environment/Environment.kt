@@ -11,5 +11,3 @@ class Environment {
         const val newsTopic = "meio-ambiente"
     }
 }
-
-//search?q=sailing+dinghies&

@@ -10,10 +10,13 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingBottom="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -42,12 +45,12 @@
                 android:layout_marginEnd="150dp"
                 android:ems="10"
                 android:hint="@string/nome_de_exibi_o"
+                android:importantForAutofill="no"
                 android:inputType="textPersonName"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView"
-                android:importantForAutofill="no" />
+                app:layout_constraintTop_toBottomOf="@+id/textView" />
 
             <Switch
                 android:id="@+id/changeTheme"
@@ -94,7 +97,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="16dp"
-                android:text="> Bing News API v7\n\t. busca de notícias\n\n > Volley\n\t. Requisições HTTP\n\n> Klaxon \n\t. Conversor de JSON\n\n> Firebase Firestore\n\t. Serviço de base de dados para sistema de comentários"
+                android:text="> Bing News API v7\n\t. busca de notícias\n\n > Volley\n\t. Requisições HTTP\n\n> Klaxon \n\t. Conversor de JSON\n\n> Firebase Firestore\n\t. Serviço de base de dados para sistema de comentários em tempo real"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView2" />
